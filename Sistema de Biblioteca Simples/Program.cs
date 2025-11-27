@@ -9,13 +9,19 @@ namespace SistemaBiblioteca
         static void Main(string[] args)
         {
             string[] mangas = {"Berserk", "Terra das Gemas", "Boa Noite Punpun", "Monster", "One Piece"};
-            string[] estado_manga = {"Disponivel", "Disponivel", "Disponivel", "Disponivel", "Disponivel"};
+            string[] estado_manga = {"Disponivel", "Disponivel", "Emprestado", "Disponivel", "Emprestado"};
+            int[] opcao_emprestado = {0, 0 ,0 , 0, 0};
             int manga_disponivel = 0;
+            int manga_emprestado = 0;
             bool erro = false;
-            int opcao, opcao_emprestimo;
+            int opcao, opcao_emprestimo, opcao_devolver, numero_opcao = 0;
+            int contador = 0, indicereal = -1;
 
             do
             {
+                manga_disponivel = 0;
+                manga_emprestado = 0;
+
                 Console.WriteLine("1 - Listar mangás.");
                 Console.WriteLine("2 - Emprestar um mangá.");
                 Console.WriteLine("3 - Devolver um mangá.");
@@ -43,7 +49,7 @@ namespace SistemaBiblioteca
                             }
                             else if (estado_manga[i] == "Emprestado")
                             {
-                                manga_disponivel--;
+                                manga_emprestado++;
                             }
                             else
                             {
@@ -51,18 +57,13 @@ namespace SistemaBiblioteca
                                 erro = true;
                                 break;
                             }
-
-                            if (manga_disponivel < 0)
-                            {
-                                manga_disponivel = 0;
-                            }
                         }
 
                         if (erro == true)
                         {
                             Console.WriteLine("O programa sera encerrado!!!!");
                             Environment.Exit(0);
-                        } 
+                        }
                         else
                         {
                             if (manga_disponivel <= 0)
@@ -88,6 +89,7 @@ namespace SistemaBiblioteca
                                             {
                                                 Console.WriteLine($"Você pegou {mangas[opcao_emprestimo - 1]} emprestado.");
                                                 estado_manga[opcao_emprestimo - 1] = "Emprestado";
+                                                manga_emprestado++;
                                                 manga_disponivel--;
                                             } 
                                             else if (estado_manga[opcao_emprestimo - 1] == "Emprestado")
@@ -105,6 +107,7 @@ namespace SistemaBiblioteca
                                             {
                                                 Console.WriteLine($"Você pegou {mangas[opcao_emprestimo - 1]} emprestado.");
                                                 estado_manga[opcao_emprestimo - 1] = "Emprestado";
+                                                manga_emprestado++;
                                                 manga_disponivel--;
                                             } 
                                             else if (estado_manga[opcao_emprestimo - 1] == "Emprestado")
@@ -122,6 +125,7 @@ namespace SistemaBiblioteca
                                             {
                                                 Console.WriteLine($"Você pegou {mangas[opcao_emprestimo - 1]} emprestado.");
                                                 estado_manga[opcao_emprestimo - 1] = "Emprestado";
+                                                manga_emprestado++;
                                                 manga_disponivel--;
                                             } 
                                             else if (estado_manga[opcao_emprestimo - 1] == "Emprestado")
@@ -139,6 +143,7 @@ namespace SistemaBiblioteca
                                             {
                                                 Console.WriteLine($"Você pegou {mangas[opcao_emprestimo - 1]} emprestado.");
                                                 estado_manga[opcao_emprestimo - 1] = "Emprestado";
+                                                manga_emprestado++;
                                                 manga_disponivel--;
                                             } 
                                             else if (estado_manga[opcao_emprestimo - 1] == "Emprestado")
@@ -156,6 +161,7 @@ namespace SistemaBiblioteca
                                             {
                                                 Console.WriteLine($"Você pegou {mangas[opcao_emprestimo - 1]} emprestado.");
                                                 estado_manga[opcao_emprestimo - 1] = "Emprestado";
+                                                manga_emprestado++;
                                                 manga_disponivel--;
                                             } 
                                             else if (estado_manga[opcao_emprestimo - 1] == "Emprestado")
@@ -175,11 +181,6 @@ namespace SistemaBiblioteca
                                             break;
                                     }
 
-                                    if (manga_disponivel < 0)
-                                    {
-                                        manga_disponivel = 0;
-                                    }
-
                                     if (manga_disponivel == 0)
                                     {
                                         Console.WriteLine("Não temos mangás disponiveis, volte mais tarde.");
@@ -191,7 +192,88 @@ namespace SistemaBiblioteca
                         
                         break;
                     case 3:
-                        Console.WriteLine("Manga Devolvido");
+                        for (int i = 0; i < mangas.Length; i++)
+                        {
+                            if (estado_manga[i] == "Disponivel")
+                            {
+                                manga_disponivel++;
+                            }
+                            else if (estado_manga[i] == "Emprestado")
+                            {
+                                manga_emprestado++;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Erro!!!!");
+                                erro = true;
+                                break;
+                            }
+                        }
+
+                        if (erro == true)
+                        {
+                            Console.WriteLine("O programa sera encerrado!!!!");
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            if (manga_emprestado <= 0)
+                            {
+                                Console.WriteLine("Você não pegou nenhum mangá emprestado");
+                            }
+                            else
+                            {
+                                do
+                                {
+                                    for (int i = 0; i < mangas.Length; i++)
+                                    {
+                                        if (estado_manga[i] == "Emprestado")
+                                        {
+                                            numero_opcao++;
+
+                                            Console.WriteLine($"{numero_opcao} - {mangas[i]}");
+
+                                            opcao_emprestado[i]++;
+                                        }
+                                    }
+
+                                    Console.WriteLine("0 - Sair.");
+
+                                    Console.WriteLine("Qual mangá você quer devolver?: ");
+                                    opcao_devolver = int.Parse(Console.ReadLine());
+
+                                    if (numero_opcao >= opcao_devolver && opcao_devolver != 0)
+                                    {
+                                        for (int i = 0; i < mangas.Length; i++)
+                                        {
+                                            if (estado_manga[i] == "Emprestado")
+                                            {
+                                                contador++;
+                                                if (contador == opcao_devolver)
+                                                {
+                                                    Console.WriteLine($"{mangas[i]} foi devolvido");
+                                                    estado_manga[i] = "Disponivel";
+                                                }
+                                            }
+                                        }
+                                    } 
+                                    else if (opcao_devolver == 0)
+                                    {
+                                        // não faz nada alem de ir para while.
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Tente Novamente");
+                                    }
+
+                                    numero_opcao = 0;
+                                    contador = 0;
+
+                                    
+                        
+                                } while(opcao_devolver != 0);
+                            } 
+                        }
                         break;
                     case 4:
                         Console.WriteLine("Procurando Manga....");
