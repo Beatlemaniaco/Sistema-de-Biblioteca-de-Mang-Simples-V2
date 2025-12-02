@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.Json.Serialization.Metadata;
+using System.Linq;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.IO.Compression;
 
 namespace SistemaBiblioteca
 {
@@ -15,7 +19,8 @@ namespace SistemaBiblioteca
             int manga_emprestado = 0;
             bool erro = false;
             int opcao, opcao_emprestimo, opcao_devolver, numero_opcao = 0;
-            int contador = 0, indicereal = -1;
+            int contador = 0;
+            string pesquisa;
 
             do
             {
@@ -223,8 +228,7 @@ namespace SistemaBiblioteca
                             }
                             else
                             {
-                                do
-                                {
+                                do{  
                                     for (int i = 0; i < mangas.Length; i++)
                                     {
                                         if (estado_manga[i] == "Emprestado")
@@ -268,15 +272,38 @@ namespace SistemaBiblioteca
 
                                     numero_opcao = 0;
                                     contador = 0;
-
                                     
-                        
-                                } while(opcao_devolver != 0);
-                            } 
+                                } while (opcao_devolver != 0);
+                            }
                         }
                         break;
                     case 4:
-                        Console.WriteLine("Procurando Manga....");
+                        do{
+                            Console.WriteLine("Area de pesquisa(Aperte 0 para sair): ");
+                            pesquisa = Console.ReadLine();
+                            
+                            if (pesquisa != ""){
+                                for (int i = 0; i < mangas.Length; i++)
+                                {
+                                    if (mangas[i].ToLower().Contains(pesquisa))
+                                    {
+                                        Console.WriteLine($"Nome: {mangas[i]} || Estado: {estado_manga[i]}");
+                                        contador++;
+                                    } 
+                                }
+
+                                if (contador <= 0)
+                                {
+                                    Console.WriteLine("Nenhum Resultado Encontrado");
+                                }
+
+                                contador = 0;
+                            } 
+                            else
+                            {
+                                Console.WriteLine("Digite Alguma Coisa");
+                            }
+                        } while (pesquisa != "0");
                         break;
                     case 5:
                         Console.WriteLine("Estatisticas.......");
