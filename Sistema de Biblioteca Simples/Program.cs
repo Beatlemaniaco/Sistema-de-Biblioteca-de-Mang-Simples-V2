@@ -14,7 +14,6 @@ namespace SistemaBiblioteca
         {
             string[] mangas = {"Berserk", "Terra das Gemas", "Boa Noite Punpun", "Monster", "One Piece"};
             string[] estado_manga = {"Disponivel", "Disponivel", "Emprestado", "Disponivel", "Emprestado"};
-            int[] opcao_emprestado = {0, 0 ,0 , 0, 0};
             double manga_disponivel = 0;
             double manga_emprestado = 0;
             bool erro = false;
@@ -236,8 +235,6 @@ namespace SistemaBiblioteca
                                             numero_opcao++;
 
                                             Console.WriteLine($"{numero_opcao} - {mangas[i]}");
-
-                                            opcao_emprestado[i]++;
                                         }
                                     }
 
