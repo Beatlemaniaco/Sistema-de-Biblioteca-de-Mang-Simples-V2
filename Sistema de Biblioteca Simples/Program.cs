@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.IO.Compression;
 
-namespace SistemaBiblioteca
+namespace Sistema_de_Biblioteca_Simples
 {
     class Program
     {
@@ -14,10 +14,10 @@ namespace SistemaBiblioteca
         {
             string[] mangas = {"Berserk", "Terra das Gemas", "Boa Noite Punpun", "Monster", "One Piece"};
             string[] estado_manga = {"Disponivel", "Disponivel", "Emprestado", "Disponivel", "Emprestado"};
-            double manga_disponivel = 0;
-            double manga_emprestado = 0;
+            int manga_disponivel = 0;
+            int manga_emprestado = 0;
             bool erro = false;
-            int opcao, opcao_emprestimo, opcao_devolver, numero_opcao = 0;
+            int opcao_menu_inicial = 0, opcao_emprestimo = 0, opcao_devolver = 0, numero_opcao = 0;
             int contador = 0;
             string pesquisa;
 
@@ -32,10 +32,9 @@ namespace SistemaBiblioteca
                 Console.WriteLine("4 - Buscar mangá pelo nome.");
                 Console.WriteLine("5 - Ver estatísticas");
                 Console.WriteLine("0 - Sair");
-                Console.WriteLine("Digite um número das opções: ");
-                opcao = int.Parse(Console.ReadLine());
+                opcao_menu_inicial = FuncoesBiblioteca.Ler_Opcao("Digite um número das opções: ");
 
-                switch (opcao)
+                switch (opcao_menu_inicial)
                 {
                     case 1:
                         Console.WriteLine("###Lista de Mangás###");
@@ -44,23 +43,10 @@ namespace SistemaBiblioteca
                             Console.WriteLine($"Nome: {mangas[i]} || Estado: {estado_manga[i]}");
                         }
                         break;
-                    case 2:
+                    case 2:                      
                         for (int i = 0; i < mangas.Length; i++)
                         {
-                            if (estado_manga[i] == "Disponivel")
-                            {
-                                manga_disponivel++;
-                            }
-                            else if (estado_manga[i] == "Emprestado")
-                            {
-                                manga_emprestado++;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Erro!!!!");
-                                erro = true;
-                                break;
-                            }
+                            FuncoesBiblioteca.VerificarManga(estado_manga, i, ref manga_emprestado, ref manga_disponivel, ref erro);
                         }
 
                         if (erro == true)
@@ -83,9 +69,7 @@ namespace SistemaBiblioteca
                                         Console.WriteLine($"{i + 1} - {mangas[i]} || {estado_manga[i]}");
                                     }
                                     Console.WriteLine("0 - Voltar.");
-                                    
-                                    Console.WriteLine("Digite o número do mangá que você quer pegar emprestado: ");
-                                    opcao_emprestimo = int.Parse(Console.ReadLine());
+                                    opcao_emprestimo = FuncoesBiblioteca.Ler_Opcao("Digite o número do mangá que você quer pegar emprestado: ");
 
                                     if (numero_opcao >= opcao_emprestimo && opcao_emprestimo != 0)
                                     {
@@ -178,8 +162,7 @@ namespace SistemaBiblioteca
 
                                     Console.WriteLine("0 - Sair.");
 
-                                    Console.WriteLine("Qual mangá você quer devolver?: ");
-                                    opcao_devolver = int.Parse(Console.ReadLine());
+                                    opcao_devolver = FuncoesBiblioteca.Ler_Opcao("Qual mangá você quer devolver?: ");
 
                                     if (numero_opcao >= opcao_devolver && opcao_devolver != 0)
                                     {
@@ -282,7 +265,7 @@ namespace SistemaBiblioteca
                         Console.WriteLine("Opção Invalida!!!!!");
                         break;
                 }
-            }while (opcao != 0);
+            }while (opcao_menu_inicial != 0);
         }
     }
 }
